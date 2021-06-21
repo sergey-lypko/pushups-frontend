@@ -12,8 +12,10 @@ function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
+
+    // const token = await fetch(api_url)
   };
 
   return (

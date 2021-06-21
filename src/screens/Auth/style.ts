@@ -30,7 +30,8 @@ export const Holder = styled.div`
       width: 75%;
       height: 50px;
       margin-top: 25px;
-      background: #16b8f3;
+      // background: #16b8f3;
+      background: red;
       border: 0;
       color: #fff;
       font-size: 17px;

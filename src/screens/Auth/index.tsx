@@ -6,6 +6,8 @@ import { Holder } from "./style";
 
 const { Title } = Typography;
 
+const api_url = "https://damp-thicket-05259.herokuapp.com/api";
+
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

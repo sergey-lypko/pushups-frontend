@@ -1,7 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-// const api_url = "https://damp-thicket-05259.herokuapp.com/api";
-
 import Auth from "screens/Auth";
 import Dashboard from "screens/Dashboard";
 

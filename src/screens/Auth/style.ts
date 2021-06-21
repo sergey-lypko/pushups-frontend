@@ -6,8 +6,7 @@ export const Holder = styled.div`
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
-  border: 1px solid red;
+  padding-top: 50px;
 
   h3 {
     margin-bottom: 25px;

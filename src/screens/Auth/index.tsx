@@ -15,7 +15,7 @@ function Auth() {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    // const token = await fetch(api_url)
+    const token = await fetch(api_url);
   };
 
   return (

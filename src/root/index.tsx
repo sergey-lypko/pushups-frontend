@@ -1,4 +1,11 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import Auth from "screens/Auth";
 import Dashboard from "screens/Dashboard";
@@ -6,21 +13,53 @@ import Dashboard from "screens/Dashboard";
 // const PrivateData = lazy(() => import("./nodes/private"));
 // const PublicData = lazy(() => import("./nodes/public"));
 
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
+type RedirectableRouteProps = {
+  isPublic?: boolean;
+  children: JSX.Element;
+
+  // FIXME
+  exact?: any;
+  path: any;
+};
+
+function RedirectableRoute({
+  isPublic,
+  children,
+  ...rest
+}: RedirectableRouteProps) {
+  const isAuthenticated = localStorage.getItem("auth-key");
+
+  const handeRedirect = () => {
+    if (isPublic) return !isAuthenticated ? children : <Redirect to="/" />;
+    return isAuthenticated ? children : <Redirect to="/auth" />;
+  };
+
+  return <Route {...rest} render={handeRedirect} />;
+}
+
 function App() {
   return (
-    <div>
+    <QueryClientProvider client={queryClient}>
       <Router>
         <Switch>
-          <Route exact path="/">
+          <RedirectableRoute exact path="/">
             <Dashboard />
-          </Route>
+          </RedirectableRoute>
 
-          <Route path="/auth">
+          <RedirectableRoute isPublic path="/auth">
             <Auth />
-          </Route>
+          </RedirectableRoute>
         </Switch>
       </Router>
-    </div>
+    </QueryClientProvider>
   );
 }
 

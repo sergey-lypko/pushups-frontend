@@ -1,29 +1,23 @@
 import { useState } from "react";
-import axios from "axios";
+import { useHistory } from "react-router-dom";
+
+import { makeLoginRequest } from "api";
 
 import { Input, Typography, notification } from "antd";
 
 import { Holder } from "./style";
 
-/* - - - - - - - - - - - - - - - - - - - - - - */
-
 const { Title } = Typography;
 
-const api_url = "https://damp-thicket-05259.herokuapp.com/api";
+/* - - - - - - - - - - - - - - - - - - - - - - */
 
 function Auth() {
   const [email, setEmail] = useState("sergey.mail@gmail.com");
-  const [password, setPassword] = useState("motor");
+  const [password, setPassword] = useState("motor123");
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const openNotification = (message: string) => {
-    notification.error({
-      message: `Error`,
-      description: message,
-      placement: "bottomLeft",
-    });
-  };
+  const history = useHistory();
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
@@ -36,17 +30,20 @@ function Auth() {
     setIsLoading(true);
 
     try {
-      const rawData = await axios.post(`${api_url}/auth/login`, requestBody);
+      const response = await makeLoginRequest(requestBody);
+      const { accessToken } = response.data;
 
-      console.log(rawData.data);
+      localStorage.setItem("auth-key", accessToken);
 
       notification.success({
         message: `Success`,
         description: "You will login soon!",
         placement: "bottomLeft",
       });
+
+      history.push("/");
     } catch (err) {
-      if (err.response.data) {
+      if (err.response && err.response.data) {
         const { error } = err.response.data;
 
         notification.error({
@@ -55,6 +52,8 @@ function Auth() {
           placement: "bottomLeft",
         });
       }
+
+      console.error("Error occured");
     } finally {
       setIsLoading(false);
     }
